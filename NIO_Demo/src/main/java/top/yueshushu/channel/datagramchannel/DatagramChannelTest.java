@@ -22,22 +22,23 @@ import java.util.concurrent.TimeUnit;
 public class DatagramChannelTest {
     /**
      * 发送数据
-     * @throws Exception
+     *
+     * @throws Exception 异常
      */
     @Test
-    public void sendTest() throws Exception{
+    public void sendTest() throws Exception {
         DatagramChannel datagramChannel = DatagramChannel.open();
         //发送到哪个, 指定地址
-        InetSocketAddress  inetSocketAddress = new InetSocketAddress(
+        InetSocketAddress inetSocketAddress = new InetSocketAddress(
                 "127.0.0.1", 9999);
         ByteBuffer byteBuffer = ByteBuffer.allocate(128);
         byteBuffer.put(Charset.forName("UTF-8").encode(
                 "两个蝴蝶飞,你好啊"
         ));
-        while(true){
+        while (true) {
             // 调用 send 方法，进行发送
             datagramChannel.send(
-                  byteBuffer,inetSocketAddress
+                    byteBuffer, inetSocketAddress
             );
             //重置
             byteBuffer.rewind();
@@ -46,8 +47,9 @@ public class DatagramChannelTest {
 
         }
     }
+
     @Test
-    public void receiveTest() throws Exception{
+    public void receiveTest() throws Exception {
         //1. 创建连接
         DatagramChannel datagramChannel = DatagramChannel.open();
         //2. 绑定端口号
@@ -58,28 +60,28 @@ public class DatagramChannelTest {
         );
         //3. 创建ByteBuffer 缓冲区
         ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-        while(true){
+        while (true) {
             //清空
             byteBuffer.clear();
             //接收数据
             SocketAddress socketAddress = datagramChannel.receive(byteBuffer);
             byteBuffer.flip();
-           log.info(">>>发送方:"+socketAddress.toString());
-           log.info(">>>具体数据:"+ Charset.forName(
-                   "UTF-8"
-           ).decode(byteBuffer));
+            log.info(">>>发送方:" + socketAddress.toString());
+            log.info(">>>具体数据:" + Charset.forName(
+                    "UTF-8"
+            ).decode(byteBuffer));
 
-           datagramChannel.send(ByteBuffer.wrap(
-                   "接收到数据了".getBytes("UTF-8")
-           ), socketAddress);
-           TimeUnit.MILLISECONDS.sleep(500);
+            datagramChannel.send(ByteBuffer.wrap(
+                    "接收到数据了".getBytes("UTF-8")
+            ), socketAddress);
+            TimeUnit.MILLISECONDS.sleep(500);
         }
     }
 
     @Test
-    public void portTest() throws Exception{
+    public void portTest() throws Exception {
         DatagramChannel datagramChannel = DatagramChannel.open();
-     //   datagramChannel.configureBlocking(false);
+        // datagramChannel.configureBlocking(false);
         //绑定到  9998, 当前发送方的 端口号
         datagramChannel.socket().bind(
                 new InetSocketAddress(
@@ -99,7 +101,7 @@ public class DatagramChannelTest {
 
         //接收数据
         ByteBuffer readBuffer = ByteBuffer.allocate(1024);
-        while(true){
+        while (true) {
             datagramChannel.write(
                     ByteBuffer.wrap(
                             "两个蝴蝶飞，你好啊222!!!".getBytes("UTF-8")
@@ -115,7 +117,7 @@ public class DatagramChannelTest {
 
             readBuffer.flip();
 
-            log.info(">>输出信息:"+Charset.forName(
+            log.info(">>输出信息:" + Charset.forName(
                     "UTF-8"
             ).decode(readBuffer));
 

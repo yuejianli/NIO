@@ -5,9 +5,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.nio.ByteBuffer;
-import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -39,9 +37,9 @@ public class SocketChannelTest {
         log.info(">>>>将数据写入到 ByteBuffer 缓冲里面");
         socketChannel.read(byteBuffer);
         byteBuffer.flip();
-        while(byteBuffer.hasRemaining()){
+        while (byteBuffer.hasRemaining()) {
             log.info(
-                    (char)byteBuffer.get()
+                    (char) byteBuffer.get()
             );
         }
         socketChannel.close();
@@ -50,7 +48,8 @@ public class SocketChannelTest {
 
     /**
      * 异步，会输出打印
-     * @throws IOException
+     *
+     * @throws IOException 异常
      */
     @Test
     public void asyncTest() throws IOException {
@@ -69,11 +68,11 @@ public class SocketChannelTest {
         //3. 将数据写入到 ByteBuffer 里面
         log.info(">>>>将数据写入到 ByteBuffer 缓冲里面");
         int readCount = socketChannel.read(byteBuffer);
-        while(readCount>0){
+        while (readCount > 0) {
             byteBuffer.flip();
-            while(byteBuffer.hasRemaining()){
+            while (byteBuffer.hasRemaining()) {
                 log.info(
-                        (char)byteBuffer.get()
+                        (char) byteBuffer.get()
                 );
             }
             byteBuffer.clear();
